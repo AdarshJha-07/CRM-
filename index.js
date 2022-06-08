@@ -5,6 +5,7 @@ const User=require("./models/userModels");
 const bcrypt=require("bcryptjs");
 
 const app=express();
+module.exports=app;
  app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 require('./routes/auth.routes')(app);

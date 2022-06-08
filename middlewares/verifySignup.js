@@ -1,5 +1,5 @@
 const User = require("../models/userModels");
-
+const constant=require("../utils/constant");
 exports.verifySignUp = async (req, res, next) => {
 
     if (!req.body.name) {
@@ -18,7 +18,7 @@ exports.verifySignUp = async (req, res, next) => {
         })
     }
     const userType = req.body.userType;
-    const userTypes = [constant.userTypes.customer, constant.userTypes.admin, constant.userTypes.engineer]
+    const userTypes = [constant.userType.customer, constant.userType.admin, constant.userType.engineer]
     if (userType && !userTypes.includes(userType)) {
         return res.status(400).send({
             message: "Failed !  User type is not correctly provided"

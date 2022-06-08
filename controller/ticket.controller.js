@@ -3,8 +3,9 @@ const Ticket = require("../models/ticket.model");
 const User = require("../models/userModels");
 const constants = require("../utils/constant")
 const objectConverter=require("../utils/objectconverter");
-exports.createTicket =async (req, res) => {
-
+const notificationServiceClient = require("../utils/Notificationservice");
+exports.createTicket = async (req, res) => {
+    
     const ticketObj = {
         title: req.body.title,
         description: req.body.description,
@@ -18,16 +19,20 @@ exports.createTicket =async (req, res) => {
         if (engineer) {
             ticketObj.assignee = engineer.userId;
         }
-
         const ticket = await Ticket.create(ticketObj);
-           const user= await User.findOne({userId:req.userId});
+        if(ticket){
+           
+        const user= await User.findOne({ userId:req.userId});
            user.ticketCreated.push(ticket._id);
-          await user.save();
+            
+            await user.save();
     engineer.ticketAssigned.push(ticket._id);
        await engineer.save();
-        
-        return res.status(201).send(objectConverter.ticketResponse(ticket));
+       notificationServiceClient.sendMail(ticket._id,"CREATED NEW TICKET :"+ticket._id,ticket.description,user.email+","+engineer.email,user.email);
+     
+       return res.status(201).send(objectConverter.ticketResponse(ticket));
     }
+}
     catch (err) {
         console.log(err.message);
         return res.status(500).send({
@@ -103,6 +108,8 @@ exports.getTicketById=async (req ,res)=>{
         })
     }
 
+
+
   return res.status(200).send(objectConverter.ticketResponse(ticket));
 }
 
@@ -122,13 +129,13 @@ exports.updateTicket = async (req, res)=>{
     /**
      * Only the ticket request be allowed to update the ticket
      */
-    const user =  await User.find({
+    const user =  await User.findOne({
         userId : req.userId
     });
     //console.log(user);
 // console.log((user[0].ticketsCreated == undefined||(!user[0].ticketCreated.includes(req.params.id))));
 
-    if((user[0].ticketsCreated == undefined||(!user[0].ticketCreated.includes(req.params.id)))&&(!(user[0].userType==constants.userType.admin))&&(!(ticket.assignee==req.userId)))
+    if((user.ticketsCreated == undefined||(!user.ticketCreated.includes(req.params.id)))&&(!(user.userType==constants.userType.admin))&&(!(ticket.assignee==req.userId)))
     {
         return res.status(403).send({
            message : "Only owner/admin/ASSIGNNED ENGINEER of the ticket is allowed to update"
@@ -147,7 +154,7 @@ exports.updateTicket = async (req, res)=>{
     const updatedTicket = await ticket.save();
 
     // Return the updated ticket
-    if(user[0].userType== constants.userType.admin){
+    if(user.userType== constants.userType.admin){
         ticket.assignee = req.body.assignee != undefined ? req.body.assignee :ticket.assignee ;
 
     }

@@ -22,11 +22,10 @@ exports.ticketResponse = (ticket) => {
         _id:ticket._id,
         title: ticket.title,
         description: ticket.description,
-        priority: ticket.priority,
+        ticketPriority: ticket.ticketPriority,
         status: ticket.status,
         assignee: ticket.assignee,
-        createdAt: ticket.createdAt,
-        updatedAt: ticket.updatedAt,
+   
     };
 }
 exports.ticketListResponse = (tickets) => {
