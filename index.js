@@ -40,4 +40,3 @@ app.listen(serverConfig.PORT,()=>{
     console.log("APPLICATION STARTED AT",serverConfig.PORT);
 
 })
-console.log(process);

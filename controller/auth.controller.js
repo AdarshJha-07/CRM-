@@ -8,7 +8,7 @@ exports.signup = async (req, res) => {
 
 
   //HOW THE USER SIGN UP WILL HAPPEN    
-  console.log(req.body);
+ // console.log(req.body);
   var userStatus = req.body.userStatus;
 
   /**
@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
   try {
     const userCreated = await User.create(userObjToBeStore);  //this line adds to the database
 
-    console.log("userCreated", userCreated);
+   // console.log("userCreated", userCreated);
 
     const userCreationResponse = {
       name: userCreated.name,
