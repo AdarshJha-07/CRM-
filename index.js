@@ -2,6 +2,7 @@ const express=require("express");
 const bodyParser=require("body-parser");
 const serverConfig=require('./configs/server.config');
 const User=require("./models/userModels");
+const dbconfig=require("./configs/db.config")
 const bcrypt=require("bcryptjs");
 
 const app=express();
@@ -14,7 +15,7 @@ require('./routes/ticket.routes')(app);
    const mongoose = require('mongoose');
 //const { init } = require("./models/userModels");
 // const { db } = require('./models/studentsModel');
-mongoose.connect("mongodb://localhost/DB_CRM", () => {
+mongoose.connect(dbconfig.DB_URI, () => {
     console.log("CONNECTED TO MONGO WORLD");
     init();
 });
