@@ -12,7 +12,6 @@ This project is node.js back-end code for a customer relationship management app
 - If the user is a customer, the account will autometically be approved on verification.
 - In case of Engineer, an admin will have to approve the account.
 - JSON Web Token used for authentication
-- User can reset forgotten password by getting an email link to reset the password
 - Users can also update some details like name and password
 - User search is also available for users with proper authorization
 
@@ -68,16 +67,9 @@ An admin can get a list of all users. The list can also be filtered by userType 
 A user or an admin can get the data of the user.<br/><br/>
 
 - **Update user data**<br/>
-`PUT /crm/api/v2/users/:id`<br/>
+`PUT /crm/api/v1/users/:id`<br/>
 A user or an admin can update the data of the user.<br/><br/>
 
-- **Forgot user password**<br/>
-`GET /crm/api/v2/users/resetpassword/:id`<br/>
-User can get an email link to reset their forgotten password.<br/><br/>
-
-- **Reset password**<br/>
-`PUT /crm/api/v2/users/resetpassword/:token`<br/>
-Updating user password by using the link provided to the registered email address.<br/><br/>
 
 >**Ticket creation and operations**
 
